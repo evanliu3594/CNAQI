@@ -47,11 +47,11 @@ IAQI_hourly <- function(Pollu, Conc){
       O3 =  c(0, 160, 200, 400,  800, 1000, 1200,  Inf)
     )
 
-    i_min <- AQI_table[[Pollu]][which(AQI_table[[Pollu]] < Conc) %>% tail(1)]
-    i_max <- AQI_table[[Pollu]][which(AQI_table[[Pollu]] >= Conc) %>% head(1)]
+    i_min <- AQI_table[[Pollu]][which(AQI_table[[Pollu]] < Conc) |> tail(1)]
+    i_max <- AQI_table[[Pollu]][which(AQI_table[[Pollu]] >= Conc) |> head(1)]
 
-    a_min <- AQI_table[["AQI"]][which(AQI_table[[Pollu]] < Conc) %>% tail(1)]
-    a_max <- AQI_table[["AQI"]][which(AQI_table[[Pollu]] >= Conc) %>% head(1)]
+    a_min <- AQI_table[["AQI"]][which(AQI_table[[Pollu]] < Conc) |> tail(1)]
+    a_max <- AQI_table[["AQI"]][which(AQI_table[[Pollu]] >= Conc) |> head(1)]
 
     if (i_max == Inf) return(Inf)
     else return(a_min + (a_max - a_min) * (Conc - i_min) / (i_max - i_min))
@@ -70,7 +70,7 @@ IAQI_hourly <- function(Pollu, Conc){
 #'
 #' @examples
 #' Calc_Hourly_AQI(SO2 = 55, NO2 = 23, CO = 140, O3 = 122)
-Calc_Hourly_AQI <- function(SO2, NO2, CO, O3){
+AQI_Hourly <- function(SO2, NO2, CO, O3){
 
   IAQIs <- c(
     SO2 = IAQI_hourly("SO2",SO2),
@@ -131,7 +131,7 @@ IAQI_Daily <- function(Pollu, Conc) {
 #'
 #' @examples
 #' Calc_Daily_AQI(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
-Calc_Daily_AQI <- function(SO2,NO2,CO,PM10,PM2.5,O3){
+AQI_Daily <- function(SO2,NO2,CO,PM10,PM2.5,O3){
   IAQIs <- c(
     SO2 = IAQI_Daily("SO2",SO2),
     NO2 = IAQI_Daily("NO2",NO2),

@@ -1,11 +1,13 @@
 Package: chnaqir
-Title: What the Package Does (One Line, Title Case)
+Title: China AQI calculator
 Version: 0.0.1
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Yifan", "LIU", , "yifan.liu@smail.nju.edu.cn", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7705-1987"))
+Description: calculate Air Quality Index (AQI) according to regulations
+    and standards set by Ministry of Ecology and Environment of China.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Language: es
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

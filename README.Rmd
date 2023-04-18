@@ -13,13 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# chnqir
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-
-# chnqir
+# chnaqir
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -38,8 +32,14 @@ devtools::install.package("evanliu3594/cnaqir")
 
 根据中华人民共和国生态环境部《环境空气质量指数（AQI）技术规定（HJ633—2012）》中的相关标准和方法，提供五个用于计算AQI的函数
 
+
 ### `DaliyMeanConc()`
 `DaliyMeanConc()` calculates daily mean concentration of 6 pollutants. Note that average `O3` concentration for one day is presented by maximum 8-hour average concentration.
+
+> Note: units of $SO_2$,  $NO_2$,  $PM_10$,  $PM_2.5$  and  $O_3$ input are  $μg/m^3$
+
+> unit of $CO$ is $mg/m^3$
+
 
 ```{r}
 library(chnaqir)
@@ -54,11 +54,11 @@ DaliyMeanConc("PM2.5", C)
 IAQI_hourly("O3", 142)
 ```
 
-### `Calc_Hourly_AQI()`
-`Calc_Hourly_AQI()` calculates the hourly AQI score and the featured pollutants based on 4 pollutants' concentration.
+### `AQI_Hourly()`
+`AQI_Hourly()` calculates the hourly AQI score and the featured pollutants based on 4 pollutants' concentration.
 
 ```{r}
-Calc_Hourly_AQI(SO2 = 300,NO2 = 200,CO = 100,O3 = 120)
+AQI_Hourly(SO2 = 300,NO2 = 200,CO = 100,O3 = 120)
 ```
 
 ### `IAQI_Daily()`
@@ -68,17 +68,19 @@ Calc_Hourly_AQI(SO2 = 300,NO2 = 200,CO = 100,O3 = 120)
 IAQI_Daily("O3", 142)
 ```
 
-### `Calc_Daily_AQI()`
-`Calc_Daily_AQI()` calculate the daily AQI score and the featured pollutants based on 6 pollutants' concentration.
+### `AQI_Daily()`
+`AQI_Daily()` calculate the daily AQI score and the featured pollutants based on 6 pollutants' concentration.
 
 ```{r}
-Calc_Daily_AQI(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
+AQI_Daily(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
 ```
 
 ### A sample workflow with AQI series functions in `tidyr` syntax.
 
+#### generating sample data
+
 ```{r}
-# generating sample data
+library(tidyverse)
 
 set.seed(3594)
 
@@ -95,32 +97,40 @@ sampleConc <- data.frame(
 sampleConc
 ```
 
+#### Calculate hourly IAQI
 ```{r}
-## Calculate hourly IAQI and AQI
 sampleConc %>% 
   pivot_longer(-Time, names_to = 'Pollu', values_to = 'Conc') %>% rowwise() %>% 
   mutate(IAQI_h = IAQI_hourly(Pollu = Pollu, Conc = Conc)) %>% select(-Conc) %>% 
   pivot_wider(names_from = 'Pollu', values_from = 'IAQI_h')
 
+```
+#### Calculate Hourly AQI 
+```{r}
 sampleConc %>% rowwise() %>% mutate(
-  AQI_h = Calc_Hourly_AQI(SO2 = SO2, NO2 = NO2,CO = CO,O3 = O3), .keep = 'none'
+  AQI_h = AQI_Hourly(SO2 = SO2, NO2 = NO2,CO = CO,O3 = O3), .keep = 'none'
 )
 ```
+#### Calculate Daily Concentration and daily AQI
 ```{r}
-## Calculate Daily Concentration and daily AQI
-
 sampleConc_daily_mean <- sampleConc %>% select(-Time) %>% 
   imap_dbl(~DaliyMeanConc(Pollu = .y, Conc = .x))
 
 sampleConc_daily_mean
+```
 
+#### Calculate daily IAQI
+```{r}
 sampleConc_daily_mean %>% imap_dbl(~IAQI_Daily(Pollu = .y, Conc = .x))
+```
 
-Calc_Daily_AQI(SO2 = sampleConc_daily_mean[["SO2"]],
-               NO2 = sampleConc_daily_mean[["NO2"]],
-               CO = sampleConc_daily_mean[["CO"]],
-               PM10 = sampleConc_daily_mean[["PM10"]],
-               PM2.5 = sampleConc_daily_mean[["PM2.5"]],
-               O3 = sampleConc_daily_mean[["O3"]])
+#### Calculate Daily AQI
+```{r}
+AQI_Daily(SO2 = sampleConc_daily_mean[["SO2"]],
+          NO2 = sampleConc_daily_mean[["NO2"]],
+          CO = sampleConc_daily_mean[["CO"]],
+          PM10 = sampleConc_daily_mean[["PM10"]],
+          PM2.5 = sampleConc_daily_mean[["PM2.5"]],
+          O3 = sampleConc_daily_mean[["O3"]])
 ```
 
