@@ -6,21 +6,21 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of chnqir is to calculate Air Quality Index according to
+The goal of `CNAQI` is to calculate Air Quality Index according to
 regulations and standards of Ministry of Ecology and Environment of
 China.
 
+根据中华人民共和国生态环境部《环境空气质量指数（AQI）技术规定（HJ633—2012）》中的相关标准和方法，提供五个用于计算AQI的函数
+
 ## Installation
 
-You can install the development version of chnqir like so:
+You can install the development version of `CNAQI` like so:
 
 ``` r
-devtools::install.package("evanliu3594/cnaqir")
+devtools::install.package("evanliu3594/CNAQI")
 ```
 
-## CNAQI
-
-根据中华人民共和国生态环境部《环境空气质量指数（AQI）技术规定（HJ633—2012）》中的相关标准和方法，提供五个用于计算AQI的函数
+## 1.Functions
 
 ### `DaliyMeanConc()`
 
@@ -38,7 +38,7 @@ library(CNAQI)
 
 C <- rnorm(24, 35, 5)
 DaliyMeanConc("PM2.5", C)
-#> [1] 33.96632
+#> [1] 34.64075
 ```
 
 ### `IAQI_hourly()`
@@ -81,9 +81,9 @@ AQI_Daily(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
 #> 140
 ```
 
-### A sample workflow with AQI series functions in `tidyr` syntax.
+## 2.A sample workflow with AQI series functions in `tidyr` syntax.
 
-#### generating sample data
+### generate sample data
 
 ``` r
 library(tidyverse)
@@ -138,7 +138,7 @@ sampleConc
 #> 24   23 272.4587  812.0440 46.08659 30.791025 174.8789 368.5642
 ```
 
-#### Calculate hourly IAQI
+### Calculate hourly IAQI
 
 ``` r
 sampleConc %>% 
@@ -168,7 +168,7 @@ sampleConc %>%
 #> # ℹ 14 more rows
 ```
 
-#### Calculate Hourly AQI
+### Calculate hourly AQI
 
 ``` r
 sampleConc %>% rowwise() %>% mutate(
@@ -191,7 +191,7 @@ sampleConc %>% rowwise() %>% mutate(
 #> # ℹ 14 more rows
 ```
 
-#### Calculate Daily Concentration and daily AQI
+### Calculate daily concentration
 
 ``` r
 sampleConc_daily_mean <- sampleConc %>% select(-Time) %>% 
@@ -202,23 +202,32 @@ sampleConc_daily_mean
 #> 301.71833 836.00124  61.01851  27.93813 202.31781 321.68959
 ```
 
-#### Calculate daily IAQI
+### Calculate daily IAQI
 
 ``` r
-sampleConc_daily_mean %>% imap_dbl(~IAQI_Daily(Pollu = .y, Conc = .x))
-#>       SO2       NO2        O3        CO     PM2.5      PM10 
-#> 123.34128 445.26381  30.50926 232.81773 252.31781 185.84479
+tibble(!!!sampleConc_daily_mean) %>% 
+  pivot_longer(everything(), names_to = "Pollu", values_to = "Conc") %>% 
+  rowwise() %>% mutate(IAQI = IAQI_Daily(Pollu = Pollu, Conc = Conc))
+#> # A tibble: 6 × 3
+#> # Rowwise: 
+#>   Pollu  Conc  IAQI
+#>   <chr> <dbl> <dbl>
+#> 1 SO2   302.  123. 
+#> 2 NO2   836.  445. 
+#> 3 O3     61.0  30.5
+#> 4 CO     27.9 233. 
+#> 5 PM2.5 202.  252. 
+#> 6 PM10  322.  186.
 ```
 
-#### Calculate Daily AQI
+### Calculate daily AQI
 
 ``` r
-AQI_Daily(SO2 = sampleConc_daily_mean[["SO2"]],
-          NO2 = sampleConc_daily_mean[["NO2"]],
-          CO = sampleConc_daily_mean[["CO"]],
-          PM10 = sampleConc_daily_mean[["PM10"]],
-          PM2.5 = sampleConc_daily_mean[["PM2.5"]],
-          O3 = sampleConc_daily_mean[["O3"]])
-#>      NO2 
-#> 445.2638
+tibble(!!!sampleConc_daily_mean) %>% 
+  mutate(AQI = AQI_Daily(SO2 = SO2, NO2 = NO2, CO = CO, PM10 = PM10, PM2.5 = PM2.5, O3 = O3),
+         .keep = "none")
+#> # A tibble: 1 × 1
+#>     AQI
+#>   <dbl>
+#> 1  445.
 ```
