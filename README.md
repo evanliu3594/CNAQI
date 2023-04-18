@@ -28,8 +28,8 @@ devtools::install.package("evanliu3594/cnaqir")
 Note that average `O3` concentration for one day is presented by maximum
 8-hour average concentration.
 
-> Note: units of $SO_2$, $NO_2$, $PM_10$, $PM_2.5$ and $O_3$ input are
-> $μg/m^3$
+> Note: units of $SO_2$, $NO_2$, $PM_{10}$, $PM_{2.5}$ and $O_3$ input
+> are $μg/m^3$
 
 > unit of $CO$ is $mg/m^3$
 
@@ -38,7 +38,7 @@ library(CNAQI)
 
 C <- rnorm(24, 35, 5)
 DaliyMeanConc("PM2.5", C)
-#> [1] 36.11927
+#> [1] 33.96632
 ```
 
 ### `IAQI_hourly()`

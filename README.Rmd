@@ -36,7 +36,7 @@ devtools::install.package("evanliu3594/cnaqir")
 ### `DaliyMeanConc()`
 `DaliyMeanConc()` calculates daily mean concentration of 6 pollutants. Note that average `O3` concentration for one day is presented by maximum 8-hour average concentration.
 
-> Note: units of $SO_2$,  $NO_2$,  $PM_10$,  $PM_2.5$  and  $O_3$ input are  $μg/m^3$
+> Note: units of $SO_2$,  $NO_2$,  $PM_{10}$,  $PM_{2.5}$  and  $O_3$ input are  $μg/m^3$
 
 > unit of $CO$ is $mg/m^3$
 
