@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# chnaqir
+# CNAQI
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -18,7 +18,7 @@ You can install the development version of chnqir like so:
 devtools::install.package("evanliu3594/cnaqir")
 ```
 
-## CHNAQIR
+## CNAQI
 
 根据中华人民共和国生态环境部《环境空气质量指数（AQI）技术规定（HJ633—2012）》中的相关标准和方法，提供五个用于计算AQI的函数
 
@@ -34,11 +34,11 @@ Note that average `O3` concentration for one day is presented by maximum
 > unit of $CO$ is $mg/m^3$
 
 ``` r
-library(chnaqir)
+library(CNAQI)
 
 C <- rnorm(24, 35, 5)
 DaliyMeanConc("PM2.5", C)
-#> [1] 33.55292
+#> [1] 36.11927
 ```
 
 ### `IAQI_hourly()`
