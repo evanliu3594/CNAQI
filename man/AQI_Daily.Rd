@@ -26,5 +26,5 @@ a named number of the daily AQI score, the name is the featured pollutant
 Calculate the daily AQI score and the featured pollutants based on 6 pollutants' concentration
 }
 \examples{
-Calc_Daily_AQI(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
+AQI_Daily(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
 }

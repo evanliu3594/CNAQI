@@ -69,7 +69,7 @@ IAQI_hourly <- function(Pollu, Conc){
 #' @export
 #'
 #' @examples
-#' Calc_Hourly_AQI(SO2 = 55, NO2 = 23, CO = 140, O3 = 122)
+#' AQI_Hourly(SO2 = 55, NO2 = 23, CO = 140, O3 = 122)
 AQI_Hourly <- function(SO2, NO2, CO, O3){
 
   IAQIs <- c(
@@ -130,7 +130,7 @@ IAQI_Daily <- function(Pollu, Conc) {
 #' @export
 #'
 #' @examples
-#' Calc_Daily_AQI(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
+#' AQI_Daily(SO2 = 55, NO2 = 23, CO = 12, O3 = 122, PM2.5 = 35, PM10 = 55)
 AQI_Daily <- function(SO2,NO2,CO,PM10,PM2.5,O3){
   IAQIs <- c(
     SO2 = IAQI_Daily("SO2",SO2),

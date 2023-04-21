@@ -22,5 +22,5 @@ a named number of the hourly AQI score, the name is the featured pollutant
 Calculate the hourly AQI score and the featured pollutants based on 4 pollutants' concentration
 }
 \examples{
-Calc_Hourly_AQI(SO2 = 55, NO2 = 23, CO = 140, O3 = 122)
+AQI_Hourly(SO2 = 55, NO2 = 23, CO = 140, O3 = 122)
 }
